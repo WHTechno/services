@@ -1,16 +1,26 @@
-// Import all project configurations
-import airchains from './airchains.js';
-import example from './example.js';
+// Import testnet projects
+import airchains from './testnet/airchains.js';
+
+// Import mainnet projects
+import example from './mainnet/example.js';
 
 // Add new project imports here
-// import newproject from './newproject.js';
+// Testnet projects:
+// import newtestnetproject from './testnet/newtestnetproject.js';
+// Mainnet projects:
+// import newmainnetproject from './mainnet/newmainnetproject.js';
 
 // Export all projects as a single object
 const projects = {
+  // Testnet projects
   airchains,
+  
+  // Mainnet projects
   example,
+  
   // Add new projects here
-  // newproject,
+  // newtestnetproject,
+  // newmainnetproject,
 };
 
 export default projects;

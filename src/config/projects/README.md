@@ -1,51 +1,86 @@
 # Project Configuration Guide
 
-This folder contains separate configuration files for each blockchain project supported by the guide services system.
+This folder contains separate configuration files for each blockchain project, organized by network type (testnet/mainnet).
 
 ## 📁 File Structure
 
 ```
 src/config/projects/
-├── README.md           # This guide
-├── _template.js        # Template for creating new projects
-├── index.js           # Main index file that imports all projects
-├── airchains.js       # Airchains project configuration
-├── example.js         # Example project configuration
-└── [newproject].js    # Your new project configurations
+├── README.md                    # This guide
+├── index.js                    # Main index file that imports all projects
+├── testnet/                    # Testnet projects folder
+│   ├── _template.js           # Template for testnet projects
+│   ├── airchains.js          # Airchains testnet configuration
+│   └── [newtestnet].js       # Your new testnet projects
+├── mainnet/                    # Mainnet projects folder
+│   ├── _template.js           # Template for mainnet projects
+│   ├── example.js            # Example mainnet configuration
+│   └── [newmainnet].js       # Your new mainnet projects
+└── _template.js               # Legacy template (deprecated)
 ```
 
 ## 🚀 How to Add a New Project
 
-### Step 1: Create Project Configuration File
+### Step 1: Choose Network Type and Copy Template
 
-1. **Copy the template file:**
-   ```bash
-   cp _template.js myproject.js
-   ```
+**For Testnet Projects:**
+```bash
+cp src/config/projects/testnet/_template.js src/config/projects/testnet/myproject.js
+```
 
-2. **Edit `myproject.js`** and update all the configuration values:
+**For Mainnet Projects:**
+```bash
+cp src/config/projects/mainnet/_template.js src/config/projects/mainnet/myproject.js
+```
+
+### Step 2: Edit Your Project Configuration File
+
+1. **Open your project file** (`testnet/myproject.js` or `mainnet/myproject.js`)
+2. **Update all configuration values:**
    - Replace `"Your Project Name"` with your project's display name
    - Replace `"your-chain-id"` with the actual chain ID
    - Replace all `yourproject` references with your project name
    - Update all commands, URLs, and endpoints
    - Update RPC endpoints list
+   - Ensure `networkLabel` is correct ("Testnet" or "Mainnet")
 
-### Step 2: Register the New Project
+### Step 3: Register the New Project
 
 1. **Edit `index.js`** and add your project:
-   ```javascript
-   // Add import at the top
-   import myproject from './myproject.js';
-   
-   // Add to projects object
-   const projects = {
-     airchains,
-     example,
-     myproject,  // Add your project here
-   };
-   ```
 
-### Step 3: Add Project Logo (Optional)
+**For Testnet Projects:**
+```javascript
+// Add import in testnet section
+import myproject from './testnet/myproject.js';
+
+// Add to projects object in testnet section
+const projects = {
+  // Testnet projects
+  airchains,
+  myproject,  // Add your testnet project here
+  
+  // Mainnet projects
+  example,
+};
+```
+
+**For Mainnet Projects:**
+```javascript
+// Add import in mainnet section
+import myproject from './mainnet/myproject.js';
+
+// Add to projects object in mainnet section
+const projects = {
+  // Testnet projects
+  airchains,
+  
+  // Mainnet projects
+  example,
+  myproject,  // Add your mainnet project here
+};
+```
+
+### Step 4: Add Project Logo (Optional)
 
 1. Place your project logo in the `public/` folder
 2. Name it `logo-myproject.png`

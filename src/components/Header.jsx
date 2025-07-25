@@ -35,12 +35,24 @@ const Header = () => {
           <span className="font-bold">NodeServices</span>
         </Link>
         <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-          <motion.div variants={navItemVariants}><NavLink to="/" onClick={handleUnimplementedClick} className="transition-colors hover:text-foreground/80 text-foreground/60">Services</NavLink></motion.div>
-          <motion.div variants={navItemVariants}><NavLink to="/" onClick={handleUnimplementedClick} className="transition-colors hover:text-foreground/80 text-foreground/60">Mainnet</NavLink></motion.div>
-          <motion.div variants={navItemVariants}><NavLink to="/services/testnet/airchains" className={({ isActive }) =>
-              isActive ? "text-foreground" : "transition-colors hover:text-foreground/80 text-foreground/60"
-            }>Testnet</NavLink></motion.div>
-          <motion.div variants={navItemVariants}><NavLink to="/" onClick={handleUnimplementedClick} className="transition-colors hover:text-foreground/80 text-foreground/60">Tools</NavLink></motion.div>
+          <motion.div variants={navItemVariants}>
+            <a 
+              href="https://whtech.xyz" 
+              className="transition-colors hover:text-foreground/80 text-foreground/60"
+            >
+              Home
+            </a>
+          </motion.div>
+          <motion.div variants={navItemVariants}>
+            <a 
+              href="https://explorer.whtech.xyz" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-foreground/80 text-foreground/60"
+            >
+              Explorer
+            </a>
+          </motion.div>
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-4">
           <NetworkSelector />
