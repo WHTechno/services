@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronRight, Settings, Rocket, ShieldCheck, Trash2, ChevronsUp, BarChart2, Users, Rss, Bot, Globe, Wallet, UserCheck, Activity, Lock } from 'lucide-react';
+import { ChevronDown, ChevronRight, Settings, Rocket, ShieldCheck, Trash2, ChevronsUp, Rss, Globe, Wallet, UserCheck, Activity, Lock } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import projects from '@/config/projects';
 
@@ -51,10 +51,7 @@ const Sidebar = () => {
   ];
 
   const otherLinks = [
-      { name: 'Decentralization Analytics', icon: BarChart2, path: '#', disabled: true },
-      { name: 'Consensus', icon: Users, path: '#', disabled: true },
       { name: 'Public RPC Scanner', icon: Rss, path: `/services/testnet/${project || 'airchains'}/public-rpc-scanner` },
-      { name: 'Proposal Bot', icon: Bot, path: '#', disabled: true },
   ];
 
   const officialResources = [
