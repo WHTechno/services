@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Server, Send, Twitter } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import NetworkSelector from '@/components/NetworkSelector';
 
 const Header = () => {
   const { toast } = useToast();
@@ -42,6 +43,7 @@ const Header = () => {
           <motion.div variants={navItemVariants}><NavLink to="/" onClick={handleUnimplementedClick} className="transition-colors hover:text-foreground/80 text-foreground/60">Tools</NavLink></motion.div>
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-4">
+          <NetworkSelector />
           <a href="#" onClick={handleUnimplementedClick} className="text-foreground/60 hover:text-foreground/80 transition-colors"><Send className="h-5 w-5" /></a>
           <a href="#" onClick={handleUnimplementedClick} className="text-foreground/60 hover:text-foreground/80 transition-colors"><Twitter className="h-5 w-5" /></a>
           <Button onClick={handleUnimplementedClick} className="hidden sm:inline-flex bg-blue-600 hover:bg-blue-700 text-white">Get Started</Button>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Toaster } from '@/components/ui/toaster';
@@ -24,18 +24,21 @@ function App() {
         <Sidebar />
         <main className="flex-grow md:pl-8 py-6 w-full overflow-x-hidden">
           <Routes>
-            <Route path="/" element={<ManualInstallationPage />} />
-            <Route path="/services/testnet/airchains" element={<ManualInstallationPage />} />
-            <Route path="/services/testnet/airchains/api-sync" element={<ApiSyncPage />} />
-            <Route path="/services/testnet/airchains/automatic-installation" element={<AutomaticInstallationPage />} />
-            <Route path="/services/testnet/airchains/create-wallet" element={<CreateWalletPage />} />
-            <Route path="/services/testnet/airchains/create-validator" element={<CreateValidatorPage />} />
-            <Route path="/services/testnet/airchains/monitoring" element={<MonitoringPage />} />
-            <Route path="/services/testnet/airchains/security" element={<SecurityPage />} />
-            <Route path="/services/testnet/airchains/delete-node" element={<DeleteNodePage />} />
-            <Route path="/services/testnet/airchains/upgrade" element={<UpgradePage />} />
-            <Route path="/services/testnet/airchains/cheat-sheet" element={<CheatSheetPage />} />
-            <Route path="/services/testnet/airchains/public-rpc-scanner" element={<PublicRpcScannerPage />} />
+            {/* Redirect root to default project */}
+            <Route path="/" element={<Navigate to="/services/testnet/airchains" replace />} />
+            
+            {/* Dynamic routes using :project parameter */}
+            <Route path="/services/testnet/:project" element={<ManualInstallationPage />} />
+            <Route path="/services/testnet/:project/api-sync" element={<ApiSyncPage />} />
+            <Route path="/services/testnet/:project/automatic-installation" element={<AutomaticInstallationPage />} />
+            <Route path="/services/testnet/:project/create-wallet" element={<CreateWalletPage />} />
+            <Route path="/services/testnet/:project/create-validator" element={<CreateValidatorPage />} />
+            <Route path="/services/testnet/:project/monitoring" element={<MonitoringPage />} />
+            <Route path="/services/testnet/:project/security" element={<SecurityPage />} />
+            <Route path="/services/testnet/:project/delete-node" element={<DeleteNodePage />} />
+            <Route path="/services/testnet/:project/upgrade" element={<UpgradePage />} />
+            <Route path="/services/testnet/:project/cheat-sheet" element={<CheatSheetPage />} />
+            <Route path="/services/testnet/:project/public-rpc-scanner" element={<PublicRpcScannerPage />} />
           </Routes>
         </main>
       </div>

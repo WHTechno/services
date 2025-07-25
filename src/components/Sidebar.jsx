@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronRight, Settings, Rocket, ShieldCheck, Trash2, ChevronsUp, BarChart2, Users, Rss, Bot, Globe, Wallet, UserCheck, Activity, Lock } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import projects from '@/config/projects';
 
 const Sidebar = () => {
   const { toast } = useToast();
+  const { project } = useParams();
+  const currentProject = projects[project] || projects.airchains;
+  
   const [openSections, setOpenSections] = useState({
     'api-sync': true,
     'installation': true,
@@ -25,35 +29,36 @@ const Sidebar = () => {
     });
   };
 
+  // Build dynamic sections based on current project
   const sections = [
-    { id: 'api-sync', title: 'API & Sync', icon: Settings, path: '/services/testnet/airchains/api-sync', items: [] },
+    { id: 'api-sync', title: 'API & Sync', icon: Settings, path: `/services/testnet/${project || 'airchains'}/api-sync`, items: [] },
     { 
       id: 'installation', 
       title: 'Installation', 
       icon: Rocket, 
       items: [
-        { name: 'Manual Installation', path: '/services/testnet/airchains', icon: null },
-        { name: 'Automatic Installation', path: '/services/testnet/airchains/automatic-installation', icon: null },
-        { name: 'Create Wallet', path: '/services/testnet/airchains/create-wallet', icon: Wallet },
-        { name: 'Create Validator', path: '/services/testnet/airchains/create-validator', icon: UserCheck },
-        { name: 'Monitoring', path: '/services/testnet/airchains/monitoring', icon: Activity },
-        { name: 'Security', path: '/services/testnet/airchains/security', icon: Lock },
-        { name: 'Delete node', path: '/services/testnet/airchains/delete-node', icon: Trash2 },
+        { name: 'Manual Installation', path: `/services/testnet/${project || 'airchains'}`, icon: null },
+        { name: 'Automatic Installation', path: `/services/testnet/${project || 'airchains'}/automatic-installation`, icon: null },
+        { name: 'Create Wallet', path: `/services/testnet/${project || 'airchains'}/create-wallet`, icon: Wallet },
+        { name: 'Create Validator', path: `/services/testnet/${project || 'airchains'}/create-validator`, icon: UserCheck },
+        { name: 'Monitoring', path: `/services/testnet/${project || 'airchains'}/monitoring`, icon: Activity },
+        { name: 'Security', path: `/services/testnet/${project || 'airchains'}/security`, icon: Lock },
+        { name: 'Delete node', path: `/services/testnet/${project || 'airchains'}/delete-node`, icon: Trash2 },
       ] 
     },
-    { id: 'upgrade', title: 'Upgrade', icon: ChevronsUp, path: '/services/testnet/airchains/upgrade', items: [] },
-    { id: 'cheat-sheet', title: 'Cheat sheet', icon: ShieldCheck, path: '/services/testnet/airchains/cheat-sheet', items: [] },
+    { id: 'upgrade', title: 'Upgrade', icon: ChevronsUp, path: `/services/testnet/${project || 'airchains'}/upgrade`, items: [] },
+    { id: 'cheat-sheet', title: 'Cheat sheet', icon: ShieldCheck, path: `/services/testnet/${project || 'airchains'}/cheat-sheet`, items: [] },
   ];
 
   const otherLinks = [
       { name: 'Decentralization Analytics', icon: BarChart2, path: '#', disabled: true },
       { name: 'Consensus', icon: Users, path: '#', disabled: true },
-      { name: 'Public RPC Scanner', icon: Rss, path: '/services/testnet/airchains/public-rpc-scanner' },
+      { name: 'Public RPC Scanner', icon: Rss, path: `/services/testnet/${project || 'airchains'}/public-rpc-scanner` },
       { name: 'Proposal Bot', icon: Bot, path: '#', disabled: true },
   ];
 
   const officialResources = [
-      { name: 'airchains.io', icon: Globe, path: '#', disabled: true },
+      { name: currentProject.urls?.officialSite || 'Official Site', icon: Globe, path: '#', disabled: true },
   ]
 
   const NavItem = ({ item, isSubItem = false }) => (
@@ -79,10 +84,12 @@ const Sidebar = () => {
     <aside className="hidden md:flex flex-col w-64 flex-shrink-0 pr-8 border-r border-slate-800">
       <div className="py-6 space-y-1">
         <div className="flex items-center pl-4 mb-4">
-          <img className="h-10 w-10 mr-3" alt="Airchains Logo" src="https://images.unsplash.com/photo-1639322537163-dd9e9a344a97" />
+          <div className="h-10 w-10 mr-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+            <span className="text-white font-bold text-lg">{currentProject.name.charAt(0)}</span>
+          </div>
           <div>
-            <h2 className="text-lg font-bold text-white">Airchains</h2>
-            <span className="text-xs font-semibold uppercase text-green-400 bg-green-900/50 px-2 py-0.5 rounded">Testnet</span>
+            <h2 className="text-lg font-bold text-white">{currentProject.name}</h2>
+            <span className="text-xs font-semibold uppercase text-green-400 bg-green-900/50 px-2 py-0.5 rounded">{currentProject.networkLabel}</span>
           </div>
         </div>
 
