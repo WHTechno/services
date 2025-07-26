@@ -6,18 +6,18 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import PageHeader from '@/components/PageHeader';
 import { useParams } from 'react-router-dom';
-import projects from '@/config/projects';
+import { getProjectConfig } from '@/config/projects/getProjectConfig';
 
 const ManualInstallationPage = () => {
-    const { project } = useParams();
-    const currentConfig = projects[project] || projects.airchains;
+    const { network, project } = useParams();
+    const currentConfig = getProjectConfig(network, project);
 
     // If project configuration is not found, display an error
     if (!currentConfig) {
         return (
             <div className="p-6 text-red-500 bg-red-900/20 border border-red-800 rounded-xl">
                 <h2 className="text-xl font-bold mb-2">Project Not Found</h2>
-                <p>The project configuration for "{project}" was not found. Please select a valid network.</p>
+                <p>The project configuration for "{network}/{project}" was not found. Please select a valid network.</p>
             </div>
         );
     }

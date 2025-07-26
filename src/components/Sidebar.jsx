@@ -3,13 +3,15 @@ import { NavLink, useParams } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, ChevronRight, Settings, Rocket, ShieldCheck, Trash2, ChevronsUp, Rss, Globe, Wallet, UserCheck, Activity, Lock } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
-import projects from '@/config/projects';
+import { getProjectConfig } from '@/config/projects/getProjectConfig';
 
 const Sidebar = () => {
   const { toast } = useToast();
-  const { project } = useParams();
-  const currentProject = projects[project] || projects.airchains;
-  
+  const { network, project } = useParams();
+  const currentProject = getProjectConfig(network, project);
+  const fallbackProject = getProjectConfig('testnet', 'airchains');
+  const safeProject = currentProject || fallbackProject;
+
   const [openSections, setOpenSections] = useState({
     'api-sync': true,
     'installation': true,
@@ -29,34 +31,48 @@ const Sidebar = () => {
     });
   };
 
+  // If config is missing, show error
+  if (!safeProject) {
+    return (
+      <aside className="hidden md:flex flex-col w-64 flex-shrink-0 pr-8 border-r border-slate-800">
+        <div className="p-6 text-red-500 bg-red-900/20 border border-red-800 rounded-xl m-4">
+          <h2 className="text-xl font-bold mb-2">Project Not Found</h2>
+          <p>The project configuration for "{network}/{project}" was not found. Please select a valid network.</p>
+        </div>
+      </aside>
+    );
+  }
+
   // Build dynamic sections based on current project
+  const net = network || 'testnet';
+  const proj = project || 'airchains';
   const sections = [
-    { id: 'api-sync', title: 'API & Sync', icon: Settings, path: `/services/testnet/${project || 'airchains'}/api-sync`, items: [] },
+    { id: 'api-sync', title: 'API & Sync', icon: Settings, path: `/services/${net}/${proj}/api-sync`, items: [] },
     { 
       id: 'installation', 
       title: 'Installation', 
       icon: Rocket, 
       items: [
-        { name: 'Manual Installation', path: `/services/testnet/${project || 'airchains'}`, icon: null },
-        { name: 'Automatic Installation', path: `/services/testnet/${project || 'airchains'}/automatic-installation`, icon: null },
-        { name: 'Create Wallet', path: `/services/testnet/${project || 'airchains'}/create-wallet`, icon: Wallet },
-        { name: 'Create Validator', path: `/services/testnet/${project || 'airchains'}/create-validator`, icon: UserCheck },
-        { name: 'Monitoring', path: `/services/testnet/${project || 'airchains'}/monitoring`, icon: Activity },
-        { name: 'Security', path: `/services/testnet/${project || 'airchains'}/security`, icon: Lock },
-        { name: 'Delete node', path: `/services/testnet/${project || 'airchains'}/delete-node`, icon: Trash2 },
+        { name: 'Manual Installation', path: `/services/${net}/${proj}`, icon: null },
+        { name: 'Automatic Installation', path: `/services/${net}/${proj}/automatic-installation`, icon: null },
+        { name: 'Create Wallet', path: `/services/${net}/${proj}/create-wallet`, icon: Wallet },
+        { name: 'Create Validator', path: `/services/${net}/${proj}/create-validator`, icon: UserCheck },
+        { name: 'Monitoring', path: `/services/${net}/${proj}/monitoring`, icon: Activity },
+        { name: 'Security', path: `/services/${net}/${proj}/security`, icon: Lock },
+        { name: 'Delete node', path: `/services/${net}/${proj}/delete-node`, icon: Trash2 },
       ] 
     },
-    { id: 'upgrade', title: 'Upgrade', icon: ChevronsUp, path: `/services/testnet/${project || 'airchains'}/upgrade`, items: [] },
-    { id: 'cheat-sheet', title: 'Cheat sheet', icon: ShieldCheck, path: `/services/testnet/${project || 'airchains'}/cheat-sheet`, items: [] },
+    { id: 'upgrade', title: 'Upgrade', icon: ChevronsUp, path: `/services/${net}/${proj}/upgrade`, items: [] },
+    { id: 'cheat-sheet', title: 'Cheat sheet', icon: ShieldCheck, path: `/services/${net}/${proj}/cheat-sheet`, items: [] },
   ];
 
   const otherLinks = [
-      { name: 'Public RPC Scanner', icon: Rss, path: `/services/testnet/${project || 'airchains'}/public-rpc-scanner` },
+      { name: 'Public RPC Scanner', icon: Rss, path: `/services/${net}/${proj}/public-rpc-scanner` },
   ];
 
   const officialResources = [
-      { name: currentProject.urls?.officialSite || 'Official Site', icon: Globe, path: '#', disabled: true },
-  ]
+      { name: safeProject.urls?.officialSite || 'Official Site', icon: Globe, path: safeProject.urls?.officialSite || '#', disabled: !safeProject.urls?.officialSite },
+  ];
 
   const NavItem = ({ item, isSubItem = false }) => (
     <NavLink
@@ -82,11 +98,11 @@ const Sidebar = () => {
       <div className="py-6 space-y-1">
         <div className="flex items-center pl-4 mb-4">
           <div className="h-10 w-10 mr-3 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-lg">{currentProject.name.charAt(0)}</span>
+            <span className="text-white font-bold text-lg">{safeProject.name?.charAt(0) || '?'}</span>
           </div>
           <div>
-            <h2 className="text-lg font-bold text-white">{currentProject.name}</h2>
-            <span className="text-xs font-semibold uppercase text-green-400 bg-green-900/50 px-2 py-0.5 rounded">{currentProject.networkLabel}</span>
+            <h2 className="text-lg font-bold text-white">{safeProject.name || 'Unknown'}</h2>
+            <span className="text-xs font-semibold uppercase text-green-400 bg-green-900/50 px-2 py-0.5 rounded">{safeProject.networkLabel || ''}</span>
           </div>
         </div>
 

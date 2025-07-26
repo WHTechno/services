@@ -1,4 +1,3 @@
-// Import all projects from the projects folder
+export * from './projects/index.js';
 import projects from './projects/index.js';
-
 export default projects;
