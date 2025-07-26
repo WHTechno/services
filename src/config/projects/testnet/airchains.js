@@ -71,6 +71,7 @@ sudo systemctl restart junctiond`,
     { url: 'https://airchains-testnet-rpc.itrocket.net/', status: 'active', height: '1,763,800' },
     { url: 'https://rpc.airchains.test.rpc.org/', status: 'inactive', height: 'N/A' },
     { url: 'https://rpc-t-airchains.nodine.id/', status: 'active', height: '1,763,799' },
+    { url: 'https://airchains-testnet-api.itrocket.net/', status: 'active', height: '1,763,799' },
   ],
   apiEndpoints: {
     rpc: `https://rpc-airchains.d-stake.xyz/
